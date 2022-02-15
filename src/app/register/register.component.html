@@ -1,0 +1,29 @@
+
+<nav class="nav grid grid-cols-2 items-center px-24 xs:px-8 py-6 pb-transparent absolute top-0 left-0 w-full z-10">
+    <div class="logo text-5xl uppercase text-gray-200 cursor-pointer" routerLink="/">jobify</div>
+    <ul class="nav__list justify-self-end flex flex-row gap-x-12 xs:gap-x-6 text-3xl xs:text-2xl text-white">
+        <li><a class="underline underline-offset-2" routerLink="/dashboard/stats">Dashboard</a> </li>
+        <li><a class="underline underline-offset-2" routerLink="/login">Login</a></li>
+    </ul>
+</nav>
+
+<div class="register min-h-screen grid grid-cols-2 xs:gap-y-8 xs:grid-cols-1 sm:grid-row-2 sm:py-28 items-center justify-items-center">
+    <form class="grid grid-cols-2  gap-y-9 gap-x-5  text-2xl w-1/2 land:w-5/6 xs:order-2" [formGroup]="registerForm" (ngSubmit)="register(registerForm.value)">
+        <span class="text-5xl col-span-full mb-5 text-gray-200  font-light justify-self-center" >Register</span>
+        <div class="rounded-lg col-span-full bg-gray-100 text-red-500 p-3" *ngIf="formErr">{{formErr}}</div>
+        <ng-container class="" formGroupName="name">
+            <input formControlName="firstName" class="py-4 px-6  outline-0 text-gray-200 rounded-lg border border-[#ffffff42] focus:border-gray-400 transition placeholder:text-gray-300 bg-transparent" type="text" placeholder="first name">
+            <input formControlName="lastName"  class="py-4 px-6  outline-0 text-gray-200 rounded-lg border border-[#ffffff42] focus:border-gray-400 transition placeholder:text-gray-300 bg-transparent" type="text" placeholder="last name">
+        </ng-container>
+        <input formControlName="country"   class="py-4 px-6 col-span-full outline-0 text-gray-200 rounded-lg border border-[#ffffff42] focus:border-gray-400 transition placeholder:text-gray-300 bg-transparent" type="text" placeholder="your country">
+        <input formControlName="email"     class="py-4 px-6 col-span-full outline-0 text-gray-200 rounded-lg border border-[#ffffff42] focus:border-gray-400 transition placeholder:text-gray-300 bg-transparent" type="email" placeholder="enter email">
+        <input formControlName="password"  class="py-4 px-6 col-span-full outline-0 text-gray-200 rounded-lg border border-[#ffffff42] focus:border-gray-400 transition placeholder:text-gray-300 bg-transparent" type="password" placeholder="enter password">
+        <button *ngIf="!(uiService.isLoading$ | async)" class="rounded-lg py-4 px-6 w-2/3 bg-[#ffffff2e] col-span-full hover:bg-[#ffffff42] text-white justify-self-center" type="submit " [disabled]="!registerForm.valid">register</button>
+        <div *ngIf="!(uiService.isLoading$ | async)" class="flex  gap-x-7 justify-center  text-2xl text-gray-300 col-span-full">
+            <span class="shrink-0">Already have an account?</span>
+            <span class="font-medium underline cursor-pointer" routerLink="/login">login</span>
+        </div>
+        <spinner *ngIf="(uiService.isLoading$ | async)" class="justify-self-center pt-7"></spinner>
+    </form>
+    <img class="xs:order-1" src="../../assets/boy.png" alt="">
+</div>

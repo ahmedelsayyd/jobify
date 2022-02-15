@@ -1,3 +1,5 @@
 export const environment = {
-  production: true
+  production: true,
+  apiUrl: 'https://jobify-app-api.herokuapp.com/api/v1'
+
 };

@@ -1,0 +1,37 @@
+<h2 class="ml-16 text-5xl font-bold mb-4">Add Jobs</h2>
+<p class="ml-16 text-2xl text-gray-500 mb-12">over view of all avilable jobs</p>
+
+<div class="grid content-center justify-items-center pt-24">
+
+    
+    
+    <form class="w-2/3 lg:w-3/4 sm:w-full grid grid-cols-2 gap-5 overflow-hidden" [formGroup]="jopForm" (ngSubmit)="addOrUpdateJob(jopForm.value)">
+        <span class="text-5xl mb-5 col-span-full text-gray-700  font-light justify-self-center" >Job</span>
+        <div class="rounded-lg col-span-full text-red-500 p-3" *ngIf="formErr">{{formErr}}</div>
+        <spinner *ngIf="(uiService.isLoading$ | async)" [theme]="'dark'"  class="col-span-full justify-self-center pt-20"></spinner>
+
+        <ng-container *ngIf="!(uiService.isLoading$ | async)">
+            <div class="rounded-lg col-span-full bg-green-400 text-white p-3 text-center" *ngIf="(isUpdated$ | async)">{{mode}} successfully</div>
+    
+            <input formControlName="position" class="py-4 px-6 outline-0 rounded-lg border border-sky-300 focus:border-sky-500 transition placeholder:text-gray-300" type="text" placeholder="position">
+            <input formControlName="company" class="py-4 px-6 outline-0 rounded-lg border border-sky-300 focus:border-sky-500 transition placeholder:text-gray-300" type="text" placeholder="company">
+            <input formControlName="location" class="py-4 px-6 outline-0 rounded-lg border border-sky-300 focus:border-sky-500 transition placeholder:text-gray-300 col-span-full	" type="text" placeholder="Job loction">
+            <select formControlName="jobType" class="py-4 bg-white px-6 outline-0 rounded-lg border border-sky-300 focus:border-sky-500 transition placeholder:text-gray-300" type="text" placeholder="status">
+                <option value="part-time">part-time</option>
+                <option value="full-time">full-time</option>
+                <option value="remote">remote</option>
+                <option value="inership">inership</option>
+    
+            </select>
+            <select formControlName="status" class="py-4 bg-white px-6 outline-0 rounded-lg border border-sky-300 focus:border-sky-500 transition placeholder:text-gray-300" type="text" placeholder="Job type">
+                <option value="pending">pending</option>
+                <option value="declined">declined</option>
+                <option value="interview">interview</option>
+            </select>
+    
+            <button [innerText]="mode" type="submit" class="text-white bg-sky-400 hover:bg-sky-500 py-3 px-4 rounded-lg">create</button>
+            <button type="reset" class="text-sky-800 border border-sky-400 bg-transparent hover:bg-sky-100 py-3 px-4 rounded-lg">clear</button>
+        </ng-container>
+
+    </form>
+</div>

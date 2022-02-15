@@ -1,0 +1,28 @@
+<div class="home">
+
+    <nav class="nav grid grid-cols-2 items-center px-24 xs:px-8 py-6 pb-transparent absolute top-0 left-0 w-full z-10">
+        <div class="logo text-5xl uppercase text-[#2D007F] cursor-pointer">jobify</div>
+        <ul class="nav__list justify-self-end flex flex-row gap-x-12 xs:gap-x-6 text-3xl xs:text-2xl text-white">
+            <li><a class="underline underline-offset-2" routerLink="/dashboard/stats">Dashboard</a> </li>
+            <li *ngIf="!(isLoggedIn$ | async)"><a class="underline underline-offset-2" routerLink="/login">Login</a></li>
+            <li *ngIf="(isLoggedIn$ | async)"><a class="underline underline-offset-2" (click)="logout()" routerLink="/login">Logout</a></li>
+
+        </ul>
+    </nav>
+
+    <header class="grid grid-cols-10 h-screen ">
+        <div class="content w-11/12  2xl:w-full col-start-1 col-end-6 lg:col-end-5 row-start-1 px-24 md:px-20 grid content-center gap-y-8">
+            <h1 class="text-8xl md:text-6xl lg:text-7xl">find your dream&nbsp;job&nbsp;here <br><span class="font-semibold text-transparent bg-clip-text bg-gradient-to-tr from-[#2D007F] to-[#F470D1]">easy & fast</span></h1>
+            <p class="text-2xl">find poper job in america can be though. <span class="font-semibold text-transparent bg-clip-text bg-gradient-to-tr from-[#2D007F] to-[#F470D1]">jobify is a plateform</span> where you can get desired job without any hassle &less time</p>
+            <button *ngIf="!(isLoggedIn$ | async)" class="text-3xl px-8 py-4 w-1/2 translate-y-full" routerLink="/register">Register</button>
+            <button *ngIf="(isLoggedIn$ | async)" class="text-3xl px-8 py-4 w-1/2 lg:w-2/3 translate-y-full" routerLink="/dashboard/stats">Get Start</button>
+
+        </div> 
+
+        <div class="img bg-no-repeat bg-cover col-start-5 lg:col-start-4 col-end-11 row-start-1">
+            <img class="ellipse" src="../../assets/ellipse.svg" alt="">
+            <img class="figure xs:hidden" src="../../assets/figure.svg" alt="">
+            
+        </div>
+    </header>
+</div>

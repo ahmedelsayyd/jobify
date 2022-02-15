@@ -1,0 +1,38 @@
+.card{
+
+    // background-image: url('../../../assets/card-bg.svg');
+    background-repeat: no-repeat;
+    background-size: cover;
+    box-shadow: 0 0 .5rem rgba(0,0,0,.1);
+}
+
+.card-wrapper{
+    grid-template-columns: repeat(auto-fit, minmax(24.5rem, 1fr));
+
+}
+
+.job-card{
+    grid-template-rows: repeat(3, 1fr);
+
+    ul{
+        transition: all .5s ease-in-out;
+        
+        &.active{
+            // height: auto;
+            animation: open .2s ease-in-out;
+            transform: scaleY(1);
+            transform-origin: top;
+
+
+        }
+        @keyframes open {
+            0%{
+                transform: scaleY(0);
+            }
+
+            100%{
+                transform: scaleY(1);
+            }
+        }
+    }
+}

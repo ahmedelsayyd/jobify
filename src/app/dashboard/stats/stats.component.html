@@ -1,0 +1,109 @@
+
+<div class="flex justify-content-start items-center gap-x-8 pl-16 mb-12">
+    <h2 class="text-5xl font-medium">Overview for </h2>
+    <select [(ngModel)]="selectedPeriod" name="duration" (ngModelChange)="updatechartOptions()" class="py-2 px-6 text-xl text-gray-400 bg-transparent  outline-0 rounded-full border focus:border-sky-500 transition placeholder:text-gray-300" type="text">
+        <option value="7">last 7 days</option>
+        <option value="30" disabled class="cursor-not-allowed">last 30 days</option>
+        <option value="90" disabled class="cursor-not-allowed">last 90 days</option>
+    </select>
+</div>
+
+<div class="content grid  auto-rows-min gap-y-8 lg:gap-y-4">
+
+    <div class="boxes grid gap-8">
+
+        <!-- FIRST CARD -->
+        <div class="first bg-white grid p-8 lg:p-6 gap-y-4 rounded-lg">
+            <!-- head -->
+            <div class="flex  justify-between items-center self-start">
+                <div class="flex items-center gap-x-3">
+                    <div class="bg-sky-100 w-20 h-20 rounded-full grid justify-items-center content-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                        </svg>
+                    </div>
+                    <h4 class="text-2xl">pending aplications</h4>
+                </div>
+                
+                <div class="bg-sky-50 text-sky-500 p-2 rounded-lg flex ">
+                    <span class="text-lg">27.99%</span>
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                        <path fill-rule="evenodd" d="M5.293 7.707a1 1 0 010-1.414l4-4a1 1 0 011.414 0l4 4a1 1 0 01-1.414 1.414L11 5.414V17a1 1 0 11-2 0V5.414L6.707 7.707a1 1 0 01-1.414 0z" clip-rule="evenodd" />
+                    </svg>
+                </div>
+                
+            </div>
+            
+            <span class=" text-9xl justify-self-center">{{(jobService.pindingJobs$ |async)?.length}}</span>
+            <span class="h-px bg-gray-400 w-1/2"></span>
+        </div>
+    
+    
+            <!-- SECOND CARD -->
+            <div class=" second bg-white grid p-8 gap-y-4 rounded-lg">
+                <!-- head -->
+                <div class="flex  justify-between items-center self-start">
+                    <div class="flex items-center gap-x-3">
+                        <div class="bg-fuchsia-100 w-20 h-20 rounded-full grid justify-items-center content-center">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                            </svg>
+                        </div>
+                        <h4 class="text-2xl">Interviews Scheduled</h4>
+                    </div>
+                    
+                    <div class="bg-fuchsia-50 text-fuchsia-500 p-2 rounded-lg flex ">
+                        <span class="text-lg">27.99%</span>
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                            <path fill-rule="evenodd" d="M5.293 7.707a1 1 0 010-1.414l4-4a1 1 0 011.414 0l4 4a1 1 0 01-1.414 1.414L11 5.414V17a1 1 0 11-2 0V5.414L6.707 7.707a1 1 0 01-1.414 0z" clip-rule="evenodd" />
+                        </svg>
+                    </div>
+                    
+                </div>
+                
+                <span class=" text-9xl justify-self-center">{{(jobService.interviewJobs$ |async)?.length}}</span>
+                <span class="h-px bg-gray-400 w-1/2"></span>
+            </div>
+    
+                <!-- THIRD CARD -->
+        <div class=" third bg-white grid p-8 gap-y-4 rounded-lg">
+            <!-- head -->
+            <div class="flex justify-between items-center self-start">
+                <div class="flex items-center gap-x-3">
+                    <div class="bg-red-100 w-20 h-20 rounded-full grid justify-items-center content-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                        </svg>
+                    </div>
+                    <h4 class="text-2xl">Jobs Declined</h4>
+                </div>
+                
+                <div class="bg-red-50 text-red-500 p-2 rounded-lg flex ">
+                    <span class="text-lg">10%</span>
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                        <path fill-rule="evenodd" d="M5.293 7.707a1 1 0 010-1.414l4-4a1 1 0 011.414 0l4 4a1 1 0 01-1.414 1.414L11 5.414V17a1 1 0 11-2 0V5.414L6.707 7.707a1 1 0 01-1.414 0z" clip-rule="evenodd" />
+                    </svg>
+                </div>
+                
+            </div>
+            
+            <span class=" text-9xl justify-self-center">{{(jobService.declinedJobs$ |async)?.length}}</span>
+            <span class="h-px bg-gray-400 w-1/2"></span>
+        </div>
+    </div>
+
+
+    <div id="chart" class="chart col-span-full mt-24">
+        <apx-chart 
+        #chart 
+        [series]="chartOptions.series" 
+        [chart]="chartOptions.chart" 
+        [title]="chartOptions.title"
+        [dataLabels]="chartOptions.dataLabels"
+        [xaxis]="chartOptions.xaxis"
+        [colors]="chartOptions.colors"
+        [plotOptions]="chartOptions.plotOptions"
+        [stroke]="chartOptions.stroke"
+        ></apx-chart>
+    </div>
+</div>

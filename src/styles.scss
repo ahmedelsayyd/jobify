@@ -1,1 +1,30 @@
 /* You can add global styles to this file, and also import other style files */
+@import 'tailwindcss/base';  
+@import 'tailwindcss/components';  
+@import 'tailwindcss/utilities';
+
+
+
+html{
+    font-size: 62.5%;
+    @media only screen and (min-width: 1500px)  {
+        font-size: 75%;
+    }
+    
+}
+
+
+body{
+    font-family: 'Clash Display', sans-serif;
+    // color: #0f172a;
+    color: #475569;
+    font-size: 1.6rem;
+
+    
+    // font-family: 'Clash Display', sans-serif;
+    // font-family: 'Nippo', sans-serif;
+    // font-family: 'General Sans', sans-serif;
+
+    // background: linear-gradient(157.49deg, #2D007F 20.14%, #F470D1 89.67%)
+
+}
