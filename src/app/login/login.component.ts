@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { Title, Meta } from '@angular/platform-browser';
 import { Router } from '@angular/router';
 import { AuthService } from '../shared/services/auth.service';
 import { UiService } from '../shared/services/ui.service';
@@ -17,7 +18,9 @@ export class LoginComponent implements OnInit {
     private fb: FormBuilder, 
     private authService: AuthService ,
     private router:Router,
-    public uiService: UiService) { }
+    public uiService: UiService,
+    private title:Title,
+    private meta: Meta,) { }
 
   ngOnInit(): void {
 
@@ -26,6 +29,10 @@ export class LoginComponent implements OnInit {
       password: ['', Validators.required],
 
     })
+
+
+    this.title.setTitle('Jopify - Login')
+    this.meta.addTags([{name: 'description', content: 'login page'}])
   }
 
 

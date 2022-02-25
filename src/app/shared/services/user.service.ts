@@ -1,5 +1,6 @@
+import { isPlatformBrowser } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { Inject, Injectable, PLATFORM_ID } from '@angular/core';
 import { tap } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { User } from '../models/user.model';
@@ -8,32 +9,48 @@ import { User } from '../models/user.model';
   providedIn: 'root'
 })
 export class UserService {
+  isBrowser
+  
+  constructor(
+    private http: HttpClient,
+    @Inject(PLATFORM_ID) private platformId:Object) {
 
-  constructor(private http: HttpClient) { }
+      this.isBrowser = isPlatformBrowser(platformId);
+     }
 
   saveUser(){
 
   }
 
-  getUser(): User{
-    return JSON.parse(localStorage.getItem('user') || '{}')
+  getUser():any{
+    if(this.isBrowser){
+      return JSON.parse(localStorage.getItem('user') || '{}')
+    }
   }
 
   updateUser(userData: Partial<User>){
     
     return this.http.patch<User>(`${environment.apiUrl}/auth/user/${this.currentUserId()}`, userData)
     .pipe(
-      tap(data=>{ localStorage.setItem('user', JSON.stringify(data))})
+      tap(data=>{ 
+        if(this.isBrowser){
+          localStorage.setItem('user', JSON.stringify(data))
+        }
+      })
     )
   }
 
   currentUserId(){
-    const user =JSON.parse(localStorage.getItem('user') || '{}')
-    return user ? user.id : null
+    if(this.isBrowser){
+      const user =JSON.parse(localStorage.getItem('user') || '{}')
+      return user ? user.id : null
+    }
   }
 
-  get userFullName(){    
-    return `${this.getUser().name.firstName} ${this.getUser().name.lastName}`
+  get userFullName():any{ 
+    if(this.isBrowser){
+      return `${this.getUser().name.firstName} ${this.getUser().name.lastName}`
+    }
     
   }
 }

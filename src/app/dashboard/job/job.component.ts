@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Title, Meta } from '@angular/platform-browser';
 import { ActivatedRoute, Router } from '@angular/router';
 import { BehaviorSubject, map, switchMap } from 'rxjs';
 import { AuthService } from 'src/app/shared/services/auth.service';
@@ -35,7 +36,9 @@ export class JobComponent implements OnInit {
     private route: ActivatedRoute,
     private fb: FormBuilder, 
     public uiService:UiService,
-    private jobService:JobService) {
+    private jobService:JobService,
+    private title:Title,
+    private meta: Meta,) {
 
     // this.checkFormMode()
 
@@ -56,9 +59,15 @@ export class JobComponent implements OnInit {
         this.uiService.isLoading$.next(false)
       })
 
+      this.title.setTitle('Jopify - Update a job')
+      this.meta.addTags([{name: 'description', content: 'Update a job'}])
+
     }else{
       this.mode ="create"
+      this.title.setTitle('Jopify - Create a job')
+      this.meta.addTags([{name: 'description', content: 'create A new job'}])
     }
+
     
   }
 
@@ -108,10 +117,10 @@ export class JobComponent implements OnInit {
 
 
   updatedState(){
-    this.isUpdated$.next(true)
-    setTimeout(()=>{
-      this.isUpdated$.next(false)
-    },2000)
+    // this.isUpdated$.next(true)
+    // setTimeout(()=>{
+    //   this.isUpdated$.next(false)
+    // },2000)
   }
 
   resetForm(){

@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { AuthService } from './shared/services/auth.service';
 
 @Component({
@@ -6,11 +6,16 @@ import { AuthService } from './shared/services/auth.service';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']
 })
-export class AppComponent {
-  title = 'jobs';
+export class AppComponent implements OnInit {
 
-  constructor(private authService: AuthService){
+  constructor(
+    private authService: AuthService){
     
     if(this.authService.isLoggedIn) this.authService.isLoggedIn$.next(true)
   }
+
+  ngOnInit(): void {
+   
+  }
+
 }

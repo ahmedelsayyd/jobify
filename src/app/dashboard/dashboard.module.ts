@@ -8,7 +8,6 @@ import { ProfileComponent } from './profile/profile.component';
 import { SharedModule } from '../shared/shared.module';
 import { DashboardComponent } from './dashboard.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { NgApexchartsModule } from 'ng-apexcharts';
 
 
 @NgModule({
@@ -23,7 +22,6 @@ import { NgApexchartsModule } from 'ng-apexcharts';
     DashboardRoutingModule,
     SharedModule,
     ReactiveFormsModule,
-    NgApexchartsModule,
     FormsModule,
   ],
   exports: [JobComponent]

@@ -1,4 +1,5 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { Title, Meta } from '@angular/platform-browser';
 import { Router } from '@angular/router';
 import { Job } from 'src/app/shared/models/job.model';
 import { Jobs } from 'src/app/shared/models/jobs.model';
@@ -23,11 +24,16 @@ export class JobsComponent implements OnInit {
     private jobService:JobService, 
     private router: Router, 
     public uiService: UiService,
+    private title:Title,
+    private meta: Meta,
     public userService:UserService) { }
 
   ngOnInit(): void {
 
     this.loadData()
+
+    this.title.setTitle('Jopify - Jobs')
+    this.meta.addTags([{name: 'description', content: 'all available jobs and there status'}])
   }
 
   loadData(){

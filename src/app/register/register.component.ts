@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Title, Meta } from '@angular/platform-browser';
 import { Router } from '@angular/router';
 import { AuthService } from '../shared/services/auth.service';
 import { UiService } from '../shared/services/ui.service';
@@ -17,7 +18,9 @@ export class RegisterComponent implements OnInit {
     private fb: FormBuilder, 
     private authService: AuthService, 
     private router:Router,
-    public uiService: UiService
+    public uiService: UiService,
+    private title:Title,
+    private meta: Meta,
     ) { }
 
   ngOnInit(): void {
@@ -32,6 +35,10 @@ export class RegisterComponent implements OnInit {
       password: ['', Validators.required],
 
     })
+
+
+    this.title.setTitle('Jopify - Register')
+    this.meta.addTags([{name: 'description', content: 'create a new acount'}])
   }
 
 

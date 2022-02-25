@@ -1,174 +1,150 @@
-import { Component, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import { ApexChart, ApexTooltip, ApexTitleSubtitle, ApexAxisChartSeries, ApexNonAxisChartSeries, ApexDataLabels, ApexFill, ApexLegend, ApexPlotOptions, ApexStroke, ApexXAxis, ApexYAxis, ChartComponent, ApexTheme } from 'ng-apexcharts';
+import { isPlatformBrowser } from '@angular/common';
+import { AfterViewInit, Component, ElementRef, Inject, OnDestroy, OnInit, PLATFORM_ID, ViewChild } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { Job } from 'src/app/shared/models/job.model';
 import { Jobs } from 'src/app/shared/models/jobs.model';
 import { JobService } from 'src/app/shared/services/job.service';
-
-
-export type ChartOptions = {
-  series: ApexAxisChartSeries;
-  chart: ApexChart;
-  xaxis: ApexXAxis;
-  title: ApexTitleSubtitle;
-  dataLables:ApexDataLabels;
-  colors: ApexFill;
-  plotOptions: ApexPlotOptions;
-  stroke: ApexStroke;
-};
+import { Chart, registerables,TimeSeriesScale } from 'chart.js';
+import 'chartjs-adapter-moment';
+import * as moment from 'moment';
+import { Title, Meta } from '@angular/platform-browser';
+Chart.register(...registerables);
 
 @Component({
   selector: 'app-stats',
   templateUrl: './stats.component.html',
   styleUrls: ['./stats.component.scss']
 })
-export class StatsComponent implements OnInit, OnDestroy {
-
-  @ViewChild("chart") chart: ChartComponent;
+export class StatsComponent implements OnInit, OnDestroy, AfterViewInit {
+  @ViewChild("chart") chart: ElementRef;
   jobs: Job[]
   jobsSub: Subscription
   selectedPeriod: number = 7
-
-  public chartOptions: Partial<ChartOptions> | any;
+  isBrowser:boolean
+ 
   
 
-  constructor(public jobService:JobService) { 
-    this.initChart()
+// ------------------------------------------------------------------
+  constructor(
+    public jobService:JobService,
+    private title:Title,
+    private meta: Meta,
+    @Inject(PLATFORM_ID) platformId: object) { 
+      this.isBrowser = isPlatformBrowser(platformId);
+
   }
 
   ngOnInit(): void {
-    
 
+    
     this.jobsSub = this.jobService.getAllJobs().subscribe((data:Jobs) =>{
       this.jobs=data.jobs
       this.jobService.calculateJobsStats(data)
-      this.updatechartOptions();
+      if(this.isBrowser){
+        this.initchart()
+      }
     })
 
+
+    this.title.setTitle('Jopify - Stats')
+    this.meta.addTags([{name: 'description', content: 'jobs status and progress'}])
   }
 
+  ngAfterViewInit(): void {
 
-  initChart(){
-    this.chartOptions = {
-      series: [],
-      plotOptions:{
-        bar:{
-          columnWidth: '50%',
-          borderRadius: 3,
-        }
+  }
+
+  initchart(){
+    
+    new Chart(this.chart.nativeElement, {
+      type:'bar',
+      data: this.getData(),
+      options: {
+          scales: {
+              xAxis: {
+                  type: 'time',
+                  time: {
+                      unit: 'month',
+
+                  }
+              },
+              y:{
+                ticks: {
+                  stepSize: 1
+              }
+              }
+          }
+      } 
+    })
+  }
+
+  getData(){
+ 
+    let data:any={
+      
+      datasets:[{
+        label:'pinding',
+        data:[],
+        backgroundColor:'rgba(255, 159, 64,.7)'
       },
-      chart: {
-        height: 500,
-        type: "bar"
+      {
+        label:'interview',
+        data:[] ,
+        backgroundColor:'rgba(54, 162, 235,.7)'
       },
-      dataLabels: {
-        enabled: false
-      },
-      title: {
-        text: `Overview For Jobs Stats`
-      },
-      xaxis: {
-        type: 'category',
-      },
-      stroke: {
-        show: true,
-        width: 2,
-        colors: ["transparent"]
-      },
+      {
+        label:'declined',
+        data:[],
+        backgroundColor:'rgba(255, 99, 132,.7)'
+      }]
     };
-  }
 
-  updatechartOptions(){
 
-    if(this.selectedPeriod == 7){
+    let interviewJobsMap:any={}
+    let penddingJobsMap:any={}
+    let declinedJobsMap:any={}
 
-      this.chartOptions.series =[
-        {
-          name: "pending",
-          data: this.getChartData('pending',7)
-        },
-        {
-          name: "interview",
-          data:  this.getChartData('interview',7)
-        },
-        {
-          name: "declined",
-          data: this.getChartData('declined',7)
-          
-        }
-      ]
+    // filter jobs by Status
+    let interviewJobs=this.jobs.filter(job => job.status == 'interview')
+    let penddingJobs=this.jobs.filter(job => job.status == 'pending')
+    let declinedJobs=this.jobs.filter(job => job.status == 'declined')
 
-      this.chartOptions.xaxis = {
-        
-        type: 'datetime',
-        min: Date.now()-(6*86400000), // Where the 6 is the number of days
-        max: Date.now(), // Today
-      }
+    // extract data based on date created and calculate Map per certain time 
+    interviewJobs.forEach(job=>{
+      console.log(job.createdAt);
+      
+      let jobDate= moment(job.createdAt).format("MMM YYYY")
+      interviewJobsMap[jobDate] = (interviewJobsMap[jobDate] || 0) + 1
+    })
 
-    }else if(this.selectedPeriod == 30){
+    penddingJobs.forEach(job=>{
+      let jobDate= moment(job.createdAt).format("MMM YYYY")
+      penddingJobsMap[jobDate] = (penddingJobsMap[jobDate] || 0) + 1
+    })
 
-      this.chartOptions.series =[
-        {
-          name: "pending",
-          data: this.getChartData('pending',30)
-        },
-        {
-          name: "interview",
-          data:  this.getChartData('interview',30)
-        },
-        {
-          name: "declined",
-          data: this.getChartData('declined',30)
-          
-        }
-      ]
+    declinedJobs.forEach(job=>{
+      let jobDate= moment(job.createdAt).format("MMM YYYY")
+      declinedJobsMap[jobDate] = (declinedJobsMap[jobDate] || 0) + 1
+    })
 
-      this.chartOptions.xaxis = {
-        
-        type: 'datetime',
-        min: Date.now()-(29*86400000), // Where the 6 is the number of days
-        max: Date.now(), // Today
-      }
-      // this.chartOptions.xaxis = {categories :['5th', '10th','15th','20th','25th','30th']}
+    
+    // assin chart datasets
+    for(let prop in penddingJobsMap){
+      data.datasets[0].data.push({x: prop,y: penddingJobsMap[prop]})
+    }
 
-    }else if(this.selectedPeriod == 90){
-      this.chartOptions.xaxis = {categories :['sat', 'sun','mon','tus','thur','fri']}
+    for(let prop in interviewJobsMap){
+      data.datasets[1].data.push({x: prop,y: interviewJobsMap[prop]})
+    }
+
+
+    for(let prop in declinedJobsMap){
+      data.datasets[2].data.push({x: prop,y: declinedJobsMap[prop]})
     }
     
+    return data
   }
 
-  getChartData(seriesName: string, period: number){
-    let dataArr = []
-
-    for(let i=0; i<period; i++){
-      dataArr.push([Date.now() - (i*86400000), 
-                    this.calculateJobCountPerTime(Date.now()-(i*86400000), seriesName)
-                  ])
-    }
-    console.log(dataArr.length);
-    
-    return dataArr
-
-    //[
-    //   [Date.now()-(5*86400000),522],
-    //   [Date.now()-(4*86400000), 3000],
-    //   [Date.now()-(3*86400000), 6000],
-    //   [Date.now()-(2*86400000), 2000],
-    //   [Date.now()-(86400000), 4000],
-    //   [Date.now(), 5000]]
-  }
-
-  calculateJobCountPerTime(timeStamp: number, seriesName: string){
-    return this.jobs.filter(job => {
-
-      const creationTime = new Date(job.createdAt).getDay()
-      const chartTime = new Date(timeStamp).getDay()
-
-      return job.status ==seriesName && creationTime == chartTime
-
-    }).length;
-
-  }
 
   ngOnDestroy(): void {
     if(this.jobsSub) this.jobsSub.unsubscribe()

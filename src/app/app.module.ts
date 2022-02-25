@@ -9,7 +9,6 @@ import { DashboardModule } from './dashboard/dashboard.module';
 import { LoginComponent } from './login/login.component';
 import { RegisterComponent } from './register/register.component';
 import { ReactiveFormsModule } from '@angular/forms';
-import { NgApexchartsModule } from 'ng-apexcharts';
 import { httpInterceptorProviders } from './interceptors';
 
 
@@ -22,7 +21,7 @@ import { httpInterceptorProviders } from './interceptors';
 
   ],
   imports: [
-    BrowserModule,
+    BrowserModule.withServerTransition({ appId: 'serverApp' }),
     AppRoutingModule,
     SharedModule,
     DashboardModule,

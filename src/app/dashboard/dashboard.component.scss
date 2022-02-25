@@ -18,6 +18,7 @@
 
     .content{
         transition: all .3s ease-out;
+        overflow: hidden;
         @media screen and (max-width:580px) {
             padding-left: 3.5rem !important;
         }

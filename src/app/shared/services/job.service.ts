@@ -1,5 +1,6 @@
+import { isPlatformBrowser } from '@angular/common';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { Inject, Injectable, PLATFORM_ID } from '@angular/core';
 import { BehaviorSubject, map } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { Job } from '../models/job.model';
@@ -16,8 +17,15 @@ export class JobService {
   interviewJobs$ = new BehaviorSubject<Job[]>([])
   declinedJobs$ = new BehaviorSubject<Job[]>([])
 
+  isBrowser
 
-  constructor(private http: HttpClient, private authService: AuthService, private userService:UserService) { }
+  constructor(
+    private http: HttpClient, 
+    private authService: AuthService, 
+    private userService:UserService,
+    @Inject(PLATFORM_ID) private platformId:Object) { 
+      this.isBrowser = isPlatformBrowser(platformId);
+    }
 
 
   getAllJobs(){
@@ -27,7 +35,7 @@ export class JobService {
             .pipe(
               map(data =>{
 
-                data.jobs.filter(job => job.createdBy == userId)
+                // data.jobs.filter(job => job.createdBy == userId)
                 return data
               }))
   }

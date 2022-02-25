@@ -1,5 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { isPlatformBrowser } from '@angular/common';
+import { Component, Inject, OnInit, PLATFORM_ID } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { Title, Meta } from '@angular/platform-browser';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { User } from 'src/app/shared/models/user.model';
 import { UiService } from 'src/app/shared/services/ui.service';
@@ -12,15 +14,21 @@ import { UserService } from 'src/app/shared/services/user.service';
 })
 export class ProfileComponent implements OnInit {
 
-  user:User
+  user:any
   userForm: FormGroup
   formErr: string
   isUpdated$ = new BehaviorSubject(false)
+  isBrowser
 
   constructor(
     private fb: FormBuilder, 
     public uiService:UiService, 
-    private userService:UserService) { }
+    private userService:UserService,
+    private title:Title,
+    private meta: Meta,
+    @Inject(PLATFORM_ID) private platformId:Object) { 
+      this.isBrowser = isPlatformBrowser(platformId);
+    }
 
   ngOnInit(): void {
 
@@ -37,6 +45,9 @@ export class ProfileComponent implements OnInit {
     this.user = this.userService.getUser()
     this.userForm.patchValue(this.user)  
       
+
+    this.title.setTitle('Jopify - Profile')
+    this.meta.addTags([{name: 'description', content: 'user profile'}])
     
   }
 
@@ -68,8 +79,11 @@ export class ProfileComponent implements OnInit {
 
   updatedState(){
     this.isUpdated$.next(true)
-    setTimeout(()=>{
-      this.isUpdated$.next(false)
-    },3000)
+    if(this.isBrowser){
+
+      setTimeout(()=>{
+        this.isUpdated$.next(false)
+      },2000)
+    }
   }
 }

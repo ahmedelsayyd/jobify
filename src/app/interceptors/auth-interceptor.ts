@@ -14,7 +14,7 @@ export class AuthInterceptor implements HttpInterceptor{
         
         if(req.url.startsWith(`${environment.apiUrl}/jobs`)){
 
-            const authToken = this.authService.token? this.authService.token: ''
+            const authToken = this.authService.token? this.authService.token: null
     
             req = req.clone({
                 setHeaders: {
