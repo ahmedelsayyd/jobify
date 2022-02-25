@@ -14,7 +14,7 @@ export class ErrorInterceptor implements HttpInterceptor{
                 .pipe(
                     catchError((err=>{
                         if(err.status ==401){this.authService.logout()}
-                        throw new Error(err)
+                        throw err
                     }))
                 )
     }
